@@ -3,11 +3,9 @@ from PIL import Image
 import numpy as np
 import tensorflow as tf
 
-# ---------------- PAGE SETUP ----------------
 st.set_page_config(page_title="EcoBin", layout="centered")
 st.title("♻️ EcoBin – Live Waste Detection")
 
-# ---------------- LOAD MODEL ----------------
 @st.cache_resource(show_spinner=False)
 def load_my_model():
     try:
@@ -23,7 +21,6 @@ if model is None:
 
 st.success("✅ Model loaded successfully")
 
-# ---------------- PREDICTION FUNCTION ----------------
 def predict(image):
     try:
         img = image.convert("RGB")
@@ -36,7 +33,6 @@ def predict(image):
         st.error(f"Prediction error: {e}")
         return None
 
-# ---------------- INPUT ----------------
 st.subheader("📷 Capture or Upload Image")
 camera_image = st.camera_input("Take a photo")
 upload_image = st.file_uploader("Or upload image", type=["jpg","png","jpeg"])
@@ -47,11 +43,9 @@ if camera_image is not None:
 elif upload_image is not None:
     image = Image.open(upload_image)
 
-# ---------------- THRESHOLD ADJUST ----------------
 st.subheader("⚖️ Adjust Threshold (0-1)")
 threshold = st.slider("Biodegradable Threshold", 0.0, 1.0, 0.5, 0.01)
 
-# ---------------- PREDICTION & DISPLAY ----------------
 if image is not None:
     st.image(image, caption="Input Image", use_column_width=True)
 
